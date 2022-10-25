@@ -30,7 +30,8 @@ func main() {
 		fmt.Println("Error reading: ", err.Error())
 	}
 
-	if string(buf) == "PING" {
-		conn.Write([]byte("+PONG\r\n"))
-	}
+  fmt.Println(buf);
+	// if string(buf) == "PING" {
+	// 	conn.Write([]byte("+PONG\r\n"))
+	// }
 }
