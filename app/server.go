@@ -29,9 +29,8 @@ func main() {
 		fmt.Println("Error reading: ", err.Error())
 	}
 
+  fmt.Println(string(buf))
 	conn.Write([]byte("+PONG\r\n"))
-	// if string(buf) == "ping" {
-	//   fmt.Println("ping arrived")
-	// 	conn.Write([]byte("+PONG\r\n"))
-	// }
+
+  fmt.Println(string(buf) == "ping")
 }
