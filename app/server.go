@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -16,13 +17,12 @@ func main() {
 		os.Exit(1)
 	}
 
-
 	for {
-    conn, err := l.Accept()
-    if err != nil {
-      fmt.Println("Error accepting connection: ", err.Error())
-      os.Exit(1)
-    }
+		conn, err := l.Accept()
+		if err != nil {
+			fmt.Println("Error accepting connection: ", err.Error())
+			os.Exit(1)
+		}
 
 		buf := make([]byte, 1024)
 
@@ -31,22 +31,14 @@ func main() {
 			fmt.Println("Error reading: ", err.Error())
 		}
 
+    expectedMessage := "ping"
+		if strings.Compare(expectedMessage, string(buf)) == 0 {
+			// conn.Write([]byte("+PONG\r\n"))
+      fmt.Println("YES")
+		}
+
 		// fmt.Println(string(buf))
-		// conn.Write([]byte("+PONG\r\n"))
-
-		 fmt.Println(equal("ping", buf))
+		// fmt.Println(equal("ping", buf))
 	}
-}
-
-func equal(s string, b []byte) bool {
-    if len(s) != len(b) {
-        return false
-    }
-    for i, x := range b {
-        if x != s[i] {
-            return false
-        }
-    }
-    return true
 }
 
