@@ -22,15 +22,17 @@ func main() {
 		os.Exit(1)
 	}
 
-	buf := make([]byte, 1024)
+	for {
+		buf := make([]byte, 1024)
 
-	_, err = conn.Read(buf)
-	if err != nil {
-		fmt.Println("Error reading: ", err.Error())
+		_, err = conn.Read(buf)
+		if err != nil {
+			fmt.Println("Error reading: ", err.Error())
+		}
+
+		fmt.Println(string(buf))
+		// conn.Write([]byte("+PONG\r\n"))
+
+		fmt.Println(string(buf) == "ping")
 	}
-
-  fmt.Println(string(buf))
-	conn.Write([]byte("+PONG\r\n"))
-
-  fmt.Println(string(buf) == "ping")
 }
