@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"strings"
 )
 
 func main() {
@@ -31,14 +30,8 @@ func main() {
 			fmt.Println("Error reading: ", err.Error())
 		}
 
-    expectedMessage := "ping"
-		if strings.Compare(expectedMessage, string(buf)) == 0 {
-			// conn.Write([]byte("+PONG\r\n"))
-      fmt.Println("YES")
-		}
-
+		conn.Write([]byte("+PONG\r\n"))
 		// fmt.Println(string(buf))
 		// fmt.Println(equal("ping", buf))
 	}
 }
-
