@@ -42,14 +42,16 @@ func handle(conn net.Conn) {
       spaces := strings.Split(message, "\r\n")
 
       count, _ := strconv.Atoi(spaces[0][1:])
-
       for i := 0; i < count; i++ {
         command := spaces[i + 2]
         space := spaces[i]
         fmt.Println(space)
+        fmt.Println(command)
 
         if command == "ping" {
           conn.Write([]byte("+PONG\r\n"))
+        } else if command == "echo" {
+          fmt.Println(spaces[i + 2])
         }
       }
     } else if buf[0] == '+' {
