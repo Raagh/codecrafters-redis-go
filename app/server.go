@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -39,15 +40,22 @@ func handle(conn net.Conn) {
       fmt.Println("is an array")
       message := string(buf)
       spaces := strings.Split(message, "\r\n")
-      fmt.Println(spaces[0])
-      fmt.Println(spaces[1])
-      fmt.Println(spaces[2])
+
+      count, _ := strconv.Atoi(spaces[0][1:])
+
+      for i := 0; i < count; i++ {
+        command := spaces[i + 2]
+        space := spaces[i]
+        fmt.Println(space)
+
+        if command == "ping" {
+          conn.Write([]byte("+PONG\r\n"))
+        }
+      }
     } else if buf[0] == '+' {
       fmt.Println("is a string")
     } else if buf[0] == '$' {
       fmt.Println("is a bulk string")
     }
-
-    conn.Write([]byte("+PONG\r\n"))
 	}
 }
