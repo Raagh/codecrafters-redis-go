@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -36,6 +37,11 @@ func handle(conn net.Conn) {
 
     if buf[0] == '*' {
       fmt.Println("is an array")
+      message := string(buf)
+      spaces := strings.Split(message, "\r\n")
+      fmt.Println(spaces[0])
+      fmt.Println(spaces[1])
+      fmt.Println(spaces[2])
     } else if buf[0] == '+' {
       fmt.Println("is a string")
     } else if buf[0] == '$' {
