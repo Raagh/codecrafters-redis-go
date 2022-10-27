@@ -34,7 +34,13 @@ func handle(conn net.Conn) {
       continue;
 		}
 
-    fmt.Println(string(buf))
+    if buf[0] == '*' {
+      fmt.Println("is an array")
+    } else if buf[0] == '+' {
+      fmt.Println("is a string")
+    } else if buf[0] == '$' {
+      fmt.Println("is a bulk string")
+    }
 
     conn.Write([]byte("+PONG\r\n"))
 	}
