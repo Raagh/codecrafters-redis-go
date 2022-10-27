@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -34,8 +35,15 @@ func handle(conn net.Conn) {
       continue;
 		}
 
-		conn.Write([]byte("+PONG\r\n"))
-		// fmt.Println(string(buf))
-		// fmt.Println(equal("ping", buf))
+    message := string(buf)
+    splitMessage := strings.Split(message, "\r\n")
+
+    if len(splitMessage) == 0 && message == "PING" {
+      fmt.Println("PONG")
+      conn.Write([]byte("+PONG\r\n"))
+    } else {
+      numberOfParameters := splitMessage[0][1:]
+      fmt.Println(numberOfParameters)
+    }
 	}
 }
