@@ -51,7 +51,8 @@ func handle(conn net.Conn) {
         if command == "ping" {
           conn.Write([]byte("+PONG\r\n"))
         } else if command == "echo" {
-          fmt.Println(spaces[i + 2])
+          fmt.Println(spaces[i + 4])
+          i = i + 4
         }
       }
     } else if buf[0] == '+' {
