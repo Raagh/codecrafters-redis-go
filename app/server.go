@@ -36,15 +36,15 @@ func handle(conn net.Conn) {
 		}
 
     message := string(buf)
-    splitMessage := strings.Split(message, "\r\n")
+    // splitMessage := strings.Split(message, "\r\n")
     fmt.Println(message)
 
-    if len(splitMessage) == 0 && message == "PING" {
+    if message == "ping" {
       fmt.Println("PONG")
       conn.Write([]byte("+PONG\r\n"))
     } else {
-      numberOfParameters := splitMessage[0][1:]
-      fmt.Println(numberOfParameters)
+      // numberOfParameters := splitMessage[0][1:]
+      // fmt.Println(numberOfParameters)
     }
 	}
 }
