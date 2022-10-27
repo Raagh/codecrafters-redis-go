@@ -37,6 +37,7 @@ func handle(conn net.Conn) {
 
     message := string(buf)
     splitMessage := strings.Split(message, "\r\n")
+    fmt.Println(message)
 
     if len(splitMessage) == 0 && message == "PING" {
       fmt.Println("PONG")
