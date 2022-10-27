@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -31,14 +32,14 @@ func handle(conn net.Conn) {
     
 		if _, err := conn.Read(buf); err != nil {
 			fmt.Println("Error reading: ", err.Error())
-      continue;
+      os.Exit(1)
 		}
 
     message := string(buf)
     // splitMessage := strings.Split(message, "\r\n")
     fmt.Println(message)
 
-    if message == "ping" {
+    if strings.ToLower(message) == "ping" {
       fmt.Println("PONG")
       conn.Write([]byte("+PONG\r\n"))
     } else {
