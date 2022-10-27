@@ -30,7 +30,7 @@ func handle(conn net.Conn) {
 		buf := make([]byte, 1024)
     
 		if _, err := conn.Read(buf); err != nil {
-			fmt.Println("Error reading: ", err.Error())
+			// fmt.Println("Error reading: ", err.Error())
       continue;
 		}
 
