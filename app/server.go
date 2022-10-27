@@ -53,6 +53,8 @@ func handle(conn net.Conn) {
         } else if command == "echo" {
           fmt.Println(spaces[i + 4])
           i = i + 4
+          parameter := spaces[i + 4]
+          conn.Write([]byte(fmt.Sprintf("+%s\r\n", parameter)))
         }
       }
     } else if buf[0] == '+' {
