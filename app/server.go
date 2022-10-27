@@ -52,9 +52,9 @@ func handle(conn net.Conn) {
           conn.Write([]byte("+PONG\r\n"))
         } else if command == "echo" {
           fmt.Println(spaces[i + 4])
-          i = i + 4
           parameter := spaces[i + 4]
           conn.Write([]byte(fmt.Sprintf("+%s\r\n", parameter)))
+          return
         }
       }
     } else if buf[0] == '+' {
