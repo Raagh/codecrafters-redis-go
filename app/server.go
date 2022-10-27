@@ -32,7 +32,7 @@ func handle(conn net.Conn) {
     
 		if _, err := conn.Read(buf); err != nil {
 			fmt.Println("Error reading: ", err.Error())
-      os.Exit(1)
+      continue;
 		}
 
     message := string(buf)
