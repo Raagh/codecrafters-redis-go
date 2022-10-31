@@ -61,8 +61,10 @@ func handle(conn net.Conn) {
 			} else if command == "set" {
 				key := spaces[4]
         newValue := spaces[6]
-        until, _ := strconv.ParseInt(spaces[8], 10, 64)
-        cache[key] = MapItem{ value: newValue, validUntil: until}
+        if len(spaces) > 6 {
+          until, _ := strconv.ParseInt(spaces[8], 10, 64)
+          cache[key] = MapItem{ value: newValue, validUntil: until}
+        }
 				conn.Write([]byte("+OK\r\n"))
       } else if command == "get" {
 				key := spaces[4]
