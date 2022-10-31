@@ -59,21 +59,22 @@ func handle(conn net.Conn) {
 			} else if command == "set" {
 				key := spaces[4]
 				newValue := spaces[6]
-        if len(spaces) > 8 {
-          if spaces[8] == "px" {
-            until, _ := strconv.ParseInt(spaces[9], 10, 64)
-            fmt.Println(until)
-            cache[key] = MapItem{value: newValue, validUntil: until}
-          }
-        } else {
-          cache[key] = MapItem{value: newValue, validUntil: -1}
-        }
+				if len(spaces) > 8 {
+					if spaces[8] == "px" {
+						milli, _ := strconv.Atoi(spaces[10])
+						fmt.Println(milli)
+						until := time.Now().Add(time.Duration(milli)).Unix()
+						cache[key] = MapItem{value: newValue, validUntil: until}
+					}
+				} else {
+					cache[key] = MapItem{value: newValue, validUntil: -1}
+				}
 				conn.Write([]byte("+OK\r\n"))
 			} else if command == "get" {
 				key := spaces[4]
 				item := cache[key]
 				now := time.Now().Unix()
-        fmt.Println(item)
+				fmt.Println(item)
 				if item.validUntil != -1 && item.validUntil < now {
 					conn.Write([]byte("$-1\r\n"))
 				} else {
