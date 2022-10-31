@@ -67,7 +67,7 @@ func handle(conn net.Conn) {
 				key := spaces[4]
 				item := cache[key]
 				now := time.Now().Unix()
-				if item.validUntil <= now {
+				if item.validUntil < now {
 					conn.Write([]byte(nil))
 				} else {
 					conn.Write([]byte(fmt.Sprintf("+%s\r\n", item.value)))
