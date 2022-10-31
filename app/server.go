@@ -29,13 +29,13 @@ func main() {
 }
 
 type MapItem struct {
-  value string
-  validUntil int64
+	value      string
+	validUntil int64
 }
 
 func handle(conn net.Conn) {
-  cache := make(map[string]MapItem)
-  
+	cache := make(map[string]MapItem)
+
 	for {
 		buf := make([]byte, 1024)
 
@@ -51,31 +51,31 @@ func handle(conn net.Conn) {
 			command := spaces[2]
 			fmt.Println(command)
 			fmt.Println(message)
-      
+
 			if command == "ping" {
 				conn.Write([]byte("+PONG\r\n"))
 			} else if command == "echo" {
 				parameter := spaces[4]
-				fmt.Println(parameter)
 				conn.Write([]byte(fmt.Sprintf("+%s\r\n", parameter)))
 			} else if command == "set" {
 				key := spaces[4]
-        newValue := spaces[6]
-        if len(spaces) > 6 {
-          until, _ := strconv.ParseInt(spaces[7], 10, 64)
-          cache[key] = MapItem{ value: newValue, validUntil: until}
-        }
+				newValue := spaces[6]
+				if len(spaces) > 6 {
+					until, _ := strconv.ParseInt(spaces[7], 10, 64)
+					fmt.Println(until)
+					cache[key] = MapItem{value: newValue, validUntil: until}
+				}
 				conn.Write([]byte("+OK\r\n"))
-      } else if command == "get" {
+			} else if command == "get" {
 				key := spaces[4]
-        item := cache[key]
-        now := time.Now().Unix()
-        if item.validUntil <= now {
-          conn.Write([]byte(nil))
-        } else {
-          conn.Write([]byte(fmt.Sprintf("+%s\r\n", item.value)))
-        }
-      }
+				item := cache[key]
+				now := time.Now().Unix()
+				if item.validUntil <= now {
+					conn.Write([]byte(nil))
+				} else {
+					conn.Write([]byte(fmt.Sprintf("+%s\r\n", item.value)))
+				}
+			}
 		} else if buf[0] == '+' {
 			fmt.Println("is a string")
 		} else if buf[0] == '$' {
