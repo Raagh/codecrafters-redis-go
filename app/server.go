@@ -27,6 +27,8 @@ func main() {
 }
 
 func handle(conn net.Conn) {
+  cache := make(map[string]string)
+  
 	for {
 		buf := make([]byte, 1024)
 
@@ -45,10 +47,15 @@ func handle(conn net.Conn) {
 			if command == "ping" {
 				conn.Write([]byte("+PONG\r\n"))
 			} else if command == "echo" {
-				fmt.Println(spaces[4])
 				parameter := spaces[4]
+				fmt.Println(parameter)
 				conn.Write([]byte(fmt.Sprintf("+%s\r\n", parameter)))
-			}
+			} else if command == "set" {
+				key := spaces[4]
+        newValue := spaces[6]
+        cache[key] = newValue
+				conn.Write([]byte("+OK\r\n"))
+      }
 		} else if buf[0] == '+' {
 			fmt.Println("is a string")
 		} else if buf[0] == '$' {
