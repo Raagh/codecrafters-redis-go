@@ -55,6 +55,10 @@ func handle(conn net.Conn) {
         newValue := spaces[6]
         cache[key] = newValue
 				conn.Write([]byte("+OK\r\n"))
+      } else if command == "get" {
+				key := spaces[4]
+        value := cache[key]
+				conn.Write([]byte(fmt.Sprintf("+%s\r\n", value)))
       }
 		} else if buf[0] == '+' {
 			fmt.Println("is a string")
