@@ -62,8 +62,8 @@ func handle(conn net.Conn) {
 				if len(spaces) > 8 {
 					if spaces[8] == "px" {
 						milli, _ := strconv.Atoi(spaces[10])
-						fmt.Println(milli)
 						until := time.Now().Add(time.Duration(milli)).Unix()
+						fmt.Println(until)
 						cache[key] = MapItem{value: newValue, validUntil: until}
 					}
 				} else {
@@ -75,6 +75,7 @@ func handle(conn net.Conn) {
 				item := cache[key]
 				now := time.Now().Unix()
 				fmt.Println(item)
+				fmt.Println(now)
 				if item.validUntil != -1 && item.validUntil < now {
 					conn.Write([]byte("$-1\r\n"))
 				} else {
