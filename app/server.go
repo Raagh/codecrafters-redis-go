@@ -62,7 +62,7 @@ func handle(conn net.Conn) {
 				if len(spaces) > 8 {
 					if spaces[8] == "px" {
 						milli, _ := strconv.Atoi(spaces[10])
-						until := time.Now().Add(time.Duration(milli)).Unix()
+						until := time.Now().Add(time.Duration(milli)).UnixMilli()
 						fmt.Println(until)
 						cache[key] = MapItem{value: newValue, validUntil: until}
 					}
@@ -73,7 +73,7 @@ func handle(conn net.Conn) {
 			} else if command == "get" {
 				key := spaces[4]
 				item := cache[key]
-				now := time.Now().Unix()
+				now := time.Now().UnixMilli()
 				fmt.Println(item)
 				fmt.Println(now)
 				if item.validUntil != -1 && item.validUntil < now {
