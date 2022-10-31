@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strconv"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -26,8 +28,13 @@ func main() {
 	}
 }
 
+type MapItem struct {
+  value string
+  validUntil int64
+}
+
 func handle(conn net.Conn) {
-  cache := make(map[string]string)
+  cache := make(map[string]MapItem)
   
 	for {
 		buf := make([]byte, 1024)
@@ -53,12 +60,18 @@ func handle(conn net.Conn) {
 			} else if command == "set" {
 				key := spaces[4]
         newValue := spaces[6]
-        cache[key] = newValue
+        until, _ := strconv.ParseInt(spaces[8], 10, 64)
+        cache[key] = MapItem{ value: newValue, validUntil: until}
 				conn.Write([]byte("+OK\r\n"))
       } else if command == "get" {
 				key := spaces[4]
-        value := cache[key]
-				conn.Write([]byte(fmt.Sprintf("+%s\r\n", value)))
+        item := cache[key]
+        now := time.Now().Unix()
+        if item.validUntil <= now {
+          conn.Write([]byte(nil))
+        } else {
+          conn.Write([]byte(fmt.Sprintf("+%s\r\n", item.value)))
+        }
       }
 		} else if buf[0] == '+' {
 			fmt.Println("is a string")
