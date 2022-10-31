@@ -49,7 +49,7 @@ func handle(conn net.Conn) {
 			message := string(buf)
 			spaces := strings.Split(message, "\r\n")
 			command := spaces[2]
-			fmt.Println(buf)
+			fmt.Println(message)
 
 			if command == "ping" {
 				conn.Write([]byte("+PONG\r\n"))
@@ -59,8 +59,8 @@ func handle(conn net.Conn) {
 			} else if command == "set" {
 				key := spaces[4]
 				newValue := spaces[6]
-				if len(spaces) > 6 {
-					until, _ := strconv.ParseInt(spaces[7], 10, 64)
+				if len(spaces) > 8 {
+					until, _ := strconv.ParseInt(spaces[8], 10, 64)
 					fmt.Println(until)
 					cache[key] = MapItem{value: newValue, validUntil: until}
 				}
