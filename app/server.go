@@ -59,15 +59,19 @@ func handle(conn net.Conn) {
 			} else if command == "set" {
 				key := spaces[4]
 				newValue := spaces[6]
-				until, _ := strconv.ParseInt("100", 10, 64)
-				fmt.Println(until)
-				cache[key] = MapItem{value: newValue, validUntil: until}
+        if len(spaces) > 8 {
+          until, _ := strconv.ParseInt("100", 10, 64)
+          fmt.Println(until)
+          cache[key] = MapItem{value: newValue, validUntil: until}
+        } else {
+          cache[key] = MapItem{value: newValue, validUntil: -1}
+        }
 				conn.Write([]byte("+OK\r\n"))
 			} else if command == "get" {
 				key := spaces[4]
 				item := cache[key]
 				now := time.Now().Unix()
-				if item.validUntil < now {
+				if item.validUntil != -1 && item.validUntil < now {
 					conn.Write([]byte("$-1\r\n"))
 				} else {
 					conn.Write([]byte(fmt.Sprintf("+%s\r\n", item.value)))
