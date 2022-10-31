@@ -30,37 +30,30 @@ func main() {
 func handle(conn net.Conn) {
 	for {
 		buf := make([]byte, 1024)
-    
+
 		if _, err := conn.Read(buf); err != nil {
 			// fmt.Println("Error reading: ", err.Error())
-      continue;
+			continue
 		}
 
-    if buf[0] == '*' {
-      fmt.Println("is an array")
-      message := string(buf)
-      spaces := strings.Split(message, "\r\n")
+		if buf[0] == '*' {
+			fmt.Println("is an array")
+			message := string(buf)
+			spaces := strings.Split(message, "\r\n")
+			command := spaces[2]
+			fmt.Println(command)
 
-      count, _ := strconv.Atoi(spaces[0][1:])
-      for i := 0; i < count; i++ {
-        command := spaces[i + 2]
-        space := spaces[i]
-        fmt.Println(space)
-        fmt.Println(command)
-
-        if command == "ping" {
-          conn.Write([]byte("+PONG\r\n"))
-        } else if command == "echo" {
-          fmt.Println(spaces[i + 4])
-          parameter := spaces[i + 4]
-          conn.Write([]byte(fmt.Sprintf("+%s\r\n", parameter)))
-          return
-        }
-      }
-    } else if buf[0] == '+' {
-      fmt.Println("is a string")
-    } else if buf[0] == '$' {
-      fmt.Println("is a bulk string")
-    }
+			if command == "ping" {
+				conn.Write([]byte("+PONG\r\n"))
+			} else if command == "echo" {
+				fmt.Println(spaces[4])
+				parameter := spaces[4]
+				conn.Write([]byte(fmt.Sprintf("+%s\r\n", parameter)))
+			}
+		} else if buf[0] == '+' {
+			fmt.Println("is a string")
+		} else if buf[0] == '$' {
+			fmt.Println("is a bulk string")
+		}
 	}
 }
