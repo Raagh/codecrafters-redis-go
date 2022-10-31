@@ -49,8 +49,7 @@ func handle(conn net.Conn) {
 			message := string(buf)
 			spaces := strings.Split(message, "\r\n")
 			command := spaces[2]
-			fmt.Println(command)
-			fmt.Println(message)
+			fmt.Println(buf)
 
 			if command == "ping" {
 				conn.Write([]byte("+PONG\r\n"))
