@@ -60,7 +60,7 @@ func handle(conn net.Conn) {
 				key := spaces[4]
 				newValue := spaces[6]
 				if len(spaces) > 8 {
-					until, _ := strconv.ParseInt(spaces[8], 10, 64)
+					until, _ := strconv.ParseInt("100", 10, 64)
 					fmt.Println(until)
 					cache[key] = MapItem{value: newValue, validUntil: until}
 				}
